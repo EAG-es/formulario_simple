@@ -18,6 +18,7 @@ import static inclui.formularios.control_entradas.k_entradas_tipo_texto;
 import inclui.formularios.control_textareas;
 import innui.formularios.controles;
 import static innui.formularios.controles.k_opciones_mapa_no_requerido;
+import static innui.formularios.formularios.k_fase_procesamiento;
 import innui.modelos.configuraciones.ResourceBundles;
 import innui.modelos.configuraciones.iniciales;
 import innui.modelos.errores.oks;
@@ -192,17 +193,17 @@ public class Formulario_simple extends iniciales {
             control_entradas entrada_radio = new control_entradas();
             entrada_radio.iniciar(k_entradas_tipo_radio, ok);
             if (ok.es == false) { return ok.es; }
-            entrada_radio.poner_en_formulario(clui_formulario, k_clave_sexo, null, tr.in(in, "Opción 1/3: ¿Sexo XY (macho)? "), null, ok);
+            entrada_radio.poner_en_formulario(clui_formulario, k_clave_sexo, "XY", tr.in(in, "Opción 1/3: ¿Sexo XY (macho)? "), null, ok);
             if (ok.es == false) { return ok.es; }
             entrada_radio = new control_entradas();
             entrada_radio.iniciar(k_entradas_tipo_radio, ok);
             if (ok.es == false) { return ok.es; }
-            entrada_radio.poner_en_formulario(clui_formulario, k_clave_sexo, null, tr.in(in, "Opción 2/3: ¿Sexo XX (hembra)? "), null, ok);
+            entrada_radio.poner_en_formulario(clui_formulario, k_clave_sexo, "XX", tr.in(in, "Opción 2/3: ¿Sexo XX (hembra)? "), null, ok);
             if (ok.es == false) { return ok.es; }
             entrada_radio = new control_entradas();
             entrada_radio.iniciar(k_entradas_tipo_radio, ok);
             if (ok.es == false) { return ok.es; }
-            entrada_radio.poner_en_formulario(clui_formulario, k_clave_sexo, null, tr.in(in, "Opción 3/3: ¿Otro (No XY y no XX)? "), null, ok);
+            entrada_radio.poner_en_formulario(clui_formulario, k_clave_sexo, "..", tr.in(in, "Opción 3/3: ¿Otro (No XY y no XX)? "), null, ok);
             if (ok.es == false) { return ok.es; }
             control_entradas entrada_fecha = new control_entradas();
             entrada_fecha.iniciar(k_entradas_tipo_fecha, ok);
@@ -232,7 +233,7 @@ public class Formulario_simple extends iniciales {
             entrada_texto = new control_entradas();
             entrada_texto.iniciar(k_entradas_tipo_texto, ok);
             if (ok.es == false) { return ok.es; }
-            Map <String, Object> opciones_mapa = new HashMap();
+            Map <String, Object> opciones_mapa = new HashMap<>();
             opciones_mapa.put(k_opciones_mapa_no_requerido, true);
             entrada_texto.poner_en_formulario(clui_formulario, k_clave_calle_extra, null, tr.in(in, "Introduzca parte extra de su dirección (después se pedirá piso y puerta). "), opciones_mapa, ok);
             if (ok.es == false) { return ok.es; }
@@ -347,7 +348,7 @@ public class Formulario_simple extends iniciales {
             control_textareas textarea = new control_textareas();
             textarea.iniciar(null, ok);
             textarea.iniciar(k_entradas_tipo_reset, ok);
-            textarea.poner_en_formulario(clui_formulario, k_clave_comentarios, null, tr.in(in, "Comentarios adicionales: "), null, ok);
+            textarea.poner_en_formulario(clui_formulario, k_clave_comentarios, null, tr.in(in, "Comentarios adicionales: "), opciones_mapa, ok);
             if (ok.es == false) { return ok.es; }
             control_entradas entrada_reset = new control_entradas();
             entrada_reset.iniciar(k_entradas_tipo_reset, ok);
