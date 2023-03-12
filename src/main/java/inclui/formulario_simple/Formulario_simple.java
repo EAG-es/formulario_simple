@@ -3,7 +3,6 @@ package inclui.formulario_simple;
 import inclui.formularios.clui_formularios;
 import inclui.formularios.control_selecciones;
 import static inclui.formularios.control_selecciones.k_control_selecciones_letras_por_linea_num;
-import static inclui.formularios.control_selecciones.k_control_selecciones_opciones_mapa;
 import inclui.formularios.control_entradas;
 import static inclui.formularios.control_entradas.k_entradas_tipo_email;
 import static inclui.formularios.control_entradas.k_entradas_tipo_fecha;
@@ -32,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
+import static inclui.formularios.control_selecciones.k_opciones_mapa_control_selecciones;
 
 /**
  *
@@ -124,6 +124,8 @@ public class Formulario_simple extends iniciales {
             iniciar(ok);
             if (ok.es) {
                 while (true) {
+                    crear_formulario_simple(ok);
+                    if (ok.es == false) { break; }
                     procesar_formulario_simple(ok);
                     if (ok.es == false) { break; }
                     break;
@@ -153,7 +155,13 @@ public class Formulario_simple extends iniciales {
         _terminar_desde_clase(this.getClass(), ok);
         return ok.es;
     }
-    
+    /**
+     * Valida el formulario
+     * @param ok
+     * @param extra_array
+     * @return
+     * @throws Exception 
+     */
     public boolean ser_formulario_valido(oks ok, Object... extra_array) throws Exception {
         if (ok.es == false) { return ok.es; }
         ResourceBundle in;
@@ -179,8 +187,50 @@ public class Formulario_simple extends iniciales {
         }
         return ok.es;
     }
-
+    /**
+     * Procesa el formulario
+     * @param ok
+     * @param extra_array
+     * @return
+     * @throws Exception 
+     */
     public boolean procesar_formulario_simple(oks ok, Object... extra_array) throws Exception {
+        if (ok.es == false) { return ok.es; }
+        ResourceBundle in;
+        in = ResourceBundles.getBundle(k_in_ruta);
+        try {
+            clui_formulario.procesar(ok);
+            if (ok.es == false) { return ok.es; }
+            if (clui_formulario.ser_cancelar(ok) == false) {
+                List<Entry<String,Object>> objetos_lista;
+                String texto;
+                objetos_lista = clui_formulario.exportar_valores(ok);
+                if (ok.es == false) { return ok.es; }
+                for (Entry<String, Object> entry: objetos_lista) {
+                    if (entry.getValue() == null) {
+                        texto = "";
+                    } else {
+                        texto = entry.getValue().toString();
+                    }
+                    escribir_linea(entry.getKey() + " \"" + texto + "\"", ok);
+                    if (ok.es == false) { return ok.es; }
+                }
+            } else {
+                escribir_linea(tr.in(in, "Formulario cancelado. "), ok);
+            }
+        } catch (Exception e) {
+            ok.setTxt(e);
+        }
+        return ok.es;
+    }    
+    /**
+     * Crea el formulario
+     * @param ok
+     * @param extra_array
+     * @return
+     * @throws Exception 
+     */
+    public boolean crear_formulario_simple(oks ok, Object... extra_array) throws Exception {
         if (ok.es == false) { return ok.es; }
         ResourceBundle in;
         in = ResourceBundles.getBundle(k_in_ruta);
@@ -270,9 +320,8 @@ public class Formulario_simple extends iniciales {
             control_selecciones paises_seleccion = new control_selecciones();
             paises_seleccion.iniciar(null, ok);
             if (ok.es == false) { return ok.es; }
-            paises_seleccion.cargar_propiedades(k_paises_seleccion_ruta,  ok);
+            paises_seleccion.cargar_control_con_propiedades(k_paises_seleccion_ruta, ok);
             if (ok.es == false) { return ok.es; }
-            opciones_mapa.put(k_control_selecciones_opciones_mapa, paises_seleccion.control_selecciones_mapa);
             String letras_por_linea = properties.getProperty(k_formulario_simple_letras_por_linea_num);
             Integer letras_por_linea_num = null;
             try {
@@ -360,28 +409,10 @@ public class Formulario_simple extends iniciales {
             if (ok.es == false) { return ok.es; }
             entrada_submit.poner_en_formulario(clui_formulario, k_clave_submit, null, tr.in(in, "¿Desea enviar el formulario? (Si no es así, se cancelará). "), null, ok);
             if (ok.es == false) { return ok.es; }
-            clui_formulario.procesar(ok);
-            if (ok.es == false) { return ok.es; }
-            if (clui_formulario.ser_cancelar(ok) == false) {
-                List<Entry<String,Object>> objetos_lista;
-                String texto;
-                objetos_lista = clui_formulario.exportar_valores(ok);
-                if (ok.es == false) { return ok.es; }
-                for (Entry<String, Object> entry: objetos_lista) {
-                    if (entry.getValue() == null) {
-                        texto = "";
-                    } else {
-                        texto = entry.getValue().toString();
-                    }
-                    escribir_linea(entry.getKey() + " \"" + texto + "\"", ok);
-                    if (ok.es == false) { return ok.es; }
-                }
-            } else {
-                escribir_linea(tr.in(in, "Formulario cancelado. "), ok);
-            }
         } catch (Exception e) {
             ok.setTxt(e);
         }
         return ok.es;
     }    
+
 }
