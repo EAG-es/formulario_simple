@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
-import static inclui.formularios.control_selecciones.k_opciones_mapa_control_selecciones;
 
 /**
  *
@@ -130,7 +129,11 @@ public class Formulario_simple extends iniciales {
                     if (ok.es == false) { break; }
                     break;
                 }
-                terminar(ok);
+                oks ok_fin = new oks();
+                terminar(ok_fin);
+                if (ok_fin.es == false) {
+                    ok.setTxt(ok.getTxt(), ok_fin.getTxt());
+                }
             }
             return ok.es;
         } catch (Exception e) {
