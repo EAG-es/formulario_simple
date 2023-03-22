@@ -63,7 +63,7 @@ public class Formulario_simple extends iniciales {
     public static String k_clave_reset = "reset";
     public static String k_clave_submit = "submit";
     public static String k_formulario_simple_letras_por_linea_num = "formulario_simple_letras_por_linea_num";
-    clui_formularios clui_formulario = new clui_formularios() {
+    public clui_formularios clui_formulario = new clui_formularios() {
         @Override
         public boolean _terminar_formulario(String modo_operacion, oks ok, Object ... extras_array) throws Exception {
             try {
